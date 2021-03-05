@@ -25,7 +25,6 @@ const
   spriteSize = 16
   gameWidth = 10
   gameHeight = 10
-  floorTimer = 1
   bulletSpeed = 10
 
 var
@@ -34,6 +33,7 @@ var
   gun: Gun
   bullets: seq[Bullet]
   score: int
+  floorTimer = 1.0
   floorPause = 0.0
   hit: bool
   finished: bool
@@ -74,33 +74,32 @@ proc gameUpdate(dt: float32) =
     bullets.add Bullet(x: gun.x, y: spriteSize, spriteId: 2)
 
   if floorPause <= 0:
-    let storeCount = len(floor) div gameWidth
-
-    if storeCount >= gameHeight - 2:
+    if (len(floor) div gameWidth) > (gameHeight - 2):
       finished = true
 
+    for f in floor.mitems:
+      f.y -= spriteSize
+
     let slotNum = rand(gameWidth - 1)
-
     for i in 0..<gameWidth:
-      let
-        slot = i == slotNum
-        y = spriteSize * gameHeight - spriteSize * (storeCount + 1)
-
-      floor.add FloorBlock(slot: slot, x: i * spriteSize, y: y, spriteId: if slot: 3 else: 4)
+      let slot = i == slotNum
+      floor.add FloorBlock(slot: slot, x: spriteSize * i, y: spriteSize * (gameHeight - 1), spriteId: if slot: 3 else: 4)
 
     floorPause = floorTimer
 
   if len(floor) > 0:
-    for f in floor[^gameWidth..^1].filterIt(it.slot):
+    for f in floor[0..<gameWidth].filterIt(it.slot):
       for b in bullets:
         if b.x == f.x and b.y >= f.y and b.y <= f.y + spriteSize:
           hit = true
 
   if hit:
     sfx(0, 1)
-    floor.delete(len(floor) - gameWidth, high(floor))
+    floor.delete(0, gameWidth - 1)
     hit = false
     inc score
+
+    floorTimer = 1 - 0.1 * float(score div 10)
 
   if finished:
     if btnp(pcStart):
