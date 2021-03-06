@@ -132,7 +132,7 @@ proc gameDraw() =
     setColor(0)
     print("Love breaks all walls.", screenWidth div 4, screenHeight div 2)
     print("Will you help it?", screenWidth div 4, screenHeight div 2 + spriteSize)
-    print("Aim with <- ->, shoot with Z.", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
+    print("Aim with < >, shoot with Z.", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
     print("Press Enter to start", screenWidth div 4, screenHeight div 2 + spriteSize * 4)
     print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 5)
 
