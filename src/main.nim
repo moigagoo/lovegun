@@ -59,11 +59,13 @@ proc gameInit() =
 
   intro = true
 
-  music(15, 0)
 
 proc gameUpdate(dt: float32) =
   if intro:
-    if btnp(pcStart): intro = false
+    if btnp(pcStart):
+      music(15, 0)
+      intro = false
+
     return
 
   if floorPause > 0:
