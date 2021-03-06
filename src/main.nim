@@ -126,6 +126,7 @@ proc gameUpdate(dt: float32) =
       finishedSoundPlayed = false
       gun.x = (spriteSize * gameWidth) div 2
       floor.setLen(0)
+      floorTimer = 1.0
       score = 0
 
 proc gameDraw() =
