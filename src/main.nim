@@ -37,6 +37,7 @@ var
   floorPause = 0.0
   hit: bool
   finished: bool
+  intro: bool
 
 
 proc gameInit() =
@@ -52,7 +53,14 @@ proc gameInit() =
 
   gun = Gun(x: (spriteSize * gameWidth) div 2, spriteId: 1)
 
+  intro = true
+
 proc gameUpdate(dt: float32) =
+  if intro:
+    if btnp(pcStart): intro = false
+    if btnp(pcB): shutdown()
+    return
+
   if floorPause > 0:
     floorPause -= dt
 
@@ -115,7 +123,20 @@ proc gameDraw() =
   setColor(7)
   boxFill(0, 0, screenWidth, screenHeight)
 
-  if finished:
+  if intro:
+    sprs(2, 0, 0, 1, 1, 8, 8)
+
+    setColor(2)
+    printc("Welcome to Love Gun!", screenWidth div 2, screenHeight div 2 - spriteSize)
+
+    setColor(0)
+    print("Love breaks all walls.", screenWidth div 4, screenHeight div 2)
+    print("Will you help it?", screenWidth div 4, screenHeight div 2 + spriteSize)
+    print("Aim with <- ->, shoot with Z.", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
+    print("Press Enter to start", screenWidth div 4, screenHeight div 2 + spriteSize * 4)
+    print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 5)
+
+  elif finished:
     sprs(2, 0, 0, 1, 1, 8, 8)
 
     setColor(2)
@@ -123,8 +144,8 @@ proc gameDraw() =
 
     setColor(0)
     print("Score: " & $score, screenWidth div 4, screenHeight div 2)
-    print("Press Enter to play again", screenWidth div 4, screenHeight div 2 + spriteSize)
-    print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 2)
+    print("Press Enter to play again", screenWidth div 4, screenHeight div 2 + spriteSize * 2)
+    print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
 
   else:
     for i, c in ceiling:
