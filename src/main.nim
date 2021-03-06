@@ -114,6 +114,7 @@ proc gameUpdate(dt: float32) =
       finished = false
       gun.x = (spriteSize * gameWidth) div 2
       floor.setLen(0)
+      score = 0
     if btnp(pcB):
       shutdown()
 
