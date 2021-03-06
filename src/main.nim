@@ -37,6 +37,7 @@ var
   floorPause = 0.0
   hit: bool
   finished: bool
+  finishedSoundPlayed: bool
   intro: bool
 
 
@@ -45,8 +46,11 @@ proc gameInit() =
 
   loadSpritesheet(0, "spritesheet.png", spriteSize, spriteSize)
 
+  loadMusic(0, "music.ogg")
+
   loadSfx(0, "shoot.ogg")
   loadSfx(1, "hit.ogg")
+  loadSfx(2, "win.ogg")
 
   for _ in 1..gameWidth:
     ceiling.add CeilBlock(spriteId: 0)
@@ -55,10 +59,11 @@ proc gameInit() =
 
   intro = true
 
+  music(15, 0)
+
 proc gameUpdate(dt: float32) =
   if intro:
     if btnp(pcStart): intro = false
-    if btnp(pcB): shutdown()
     return
 
   if floorPause > 0:
@@ -110,13 +115,16 @@ proc gameUpdate(dt: float32) =
     floorTimer = 1 - 0.1 * float(score div 10)
 
   if finished:
+    if not finishedSoundPlayed:
+      sfx(0, 2)
+      finishedSoundPlayed = true
+
     if btnp(pcStart):
       finished = false
+      finishedSoundPlayed = false
       gun.x = (spriteSize * gameWidth) div 2
       floor.setLen(0)
       score = 0
-    if btnp(pcB):
-      shutdown()
 
 proc gameDraw() =
   cls()
@@ -135,18 +143,16 @@ proc gameDraw() =
     print("Will you help it?", screenWidth div 4, screenHeight div 2 + spriteSize)
     print("Aim with < >, shoot with Z.", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
     print("Press Enter to start", screenWidth div 4, screenHeight div 2 + spriteSize * 4)
-    print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 5)
 
   elif finished:
     sprs(2, 0, 0, 1, 1, 8, 8)
 
     setColor(2)
-    printc("I love you!", screenWidth div 2, screenHeight div 2 - spriteSize)
+    printc("I love you, Kosha!", screenWidth div 2, screenHeight div 2 - spriteSize)
 
     setColor(0)
     print("Score: " & $score, screenWidth div 4, screenHeight div 2)
-    print("Press Enter to play again", screenWidth div 4, screenHeight div 2 + spriteSize * 2)
-    print("Press X to exit", screenWidth div 4, screenHeight div 2 + spriteSize * 3)
+    print("Press Enter to play again", screenWidth div 4, screenHeight div 2 + spriteSize)
 
   else:
     for i, c in ceiling:
