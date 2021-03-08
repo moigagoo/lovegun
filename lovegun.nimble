@@ -7,7 +7,7 @@ license = "MIT"
 
 # Deps
 requires "nim >= 1.2.0"
-requires "nico >= 0.2.5"
+requires "nico#fixNimPNGPalette"
 
 srcDir = "src"
 
