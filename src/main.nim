@@ -151,7 +151,7 @@ proc gameDraw() =
     sprs(2, 0, 0, 1, 1, 8, 8)
 
     setColor(2)
-    printc("I love you, Kosha!", screenWidth div 2, screenHeight div 2 - spriteSize)
+    printc("You're doing great!", screenWidth div 2, screenHeight div 2 - spriteSize)
 
     setColor(0)
     print("Score: " & $score, screenWidth div 4, screenHeight div 2)
