@@ -76,11 +76,11 @@ proc gameUpdate(dt: float32) =
 
   bullets.keepItIf(it.y < spriteSize * gameHeight)
 
-  if btnpr(pcLeft, repeat = 5):
+  if btnpr(pcLeft, repeat = 5) or keypr(K_k, repeat = 5):
     if gun.x > 0:
       gun.x -= spriteSize
 
-  if btnpr(pcRight, repeat = 5):
+  if btnpr(pcRight, repeat = 5) or keypr(K_j, repeat = 5):
     if gun.x < spriteSize * (gameWidth - 1):
       gun.x += spriteSize
 
